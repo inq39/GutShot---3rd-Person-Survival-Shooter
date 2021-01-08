@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    [Header("Controller Settings")]
     private CharacterController _cc;
     private GameObject _camera;
     [SerializeField] private float _playerSpeed = 6.0f;
@@ -13,6 +13,10 @@ public class Player : MonoBehaviour
     private float _gravity = 20.0f;
     [SerializeField] private bool _isGrounded;
     
+    [Header("Mouse Sensitivity")]
+    [SerializeField] [Range(0.5f, 2)] private float _mouseYSensitivity;
+    [SerializeField] [Range(0.5f, 2)] private float _mouseXSensitivity;
+
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +33,8 @@ public class Player : MonoBehaviour
             Debug.LogError("Main Camera is null.");
         }
 
+        Cursor.lockState = CursorLockMode.Locked;
+
     }
 
     // Update is called once per frame
@@ -36,9 +42,8 @@ public class Player : MonoBehaviour
     {
         _isGrounded = _cc.isGrounded;
         PlayerMovement();
-
         PlayerLook();
-
+        UnlockCursor();
        
     }
     void PlayerLook()
@@ -47,12 +52,12 @@ public class Player : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y");
 
         Vector3 currentRotation = transform.localEulerAngles;
-        currentRotation.y += mouseX;
+        currentRotation.y += mouseX * _mouseXSensitivity;
         transform.localRotation = Quaternion.AngleAxis(currentRotation.y, Vector3.up);
 
 
         Vector3 currentCameraRotation = _camera.transform.localEulerAngles;
-        currentCameraRotation.x -= mouseY;
+        currentCameraRotation.x -= mouseY * _mouseYSensitivity;
         _camera.transform.localRotation = Quaternion.AngleAxis(currentCameraRotation.x, Vector3.right);
     }
 
@@ -73,9 +78,16 @@ public class Player : MonoBehaviour
 
         }
 
-        _velocity.y -= _gravity * Time.deltaTime; ;
+        _velocity.y -= _gravity * Time.deltaTime;
+        _velocity = transform.TransformDirection(_velocity);
         _cc.Move(_velocity * Time.deltaTime);
     }
 
-    
+    private void UnlockCursor()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
 }
