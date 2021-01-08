@@ -12,7 +12,6 @@ public class Player : MonoBehaviour
     private float _jumpHeight = 8.0f;
     private float _gravity = 20.0f;
     [SerializeField] private bool _isGrounded;
-    private GameObject _player;
     
 
     // Start is called before the first frame update
@@ -30,12 +29,6 @@ public class Player : MonoBehaviour
             Debug.LogError("Main Camera is null.");
         }
 
-        _player = GameObject.FindWithTag("Player");
-        if (_player == null)
-        {
-            Debug.LogError("Player is null.");
-        }
-
     }
 
     // Update is called once per frame
@@ -44,13 +37,24 @@ public class Player : MonoBehaviour
         _isGrounded = _cc.isGrounded;
         PlayerMovement();
 
+        PlayerLook();
+
+       
+    }
+    void PlayerLook()
+    {
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
-        
-        //_player.transform.Rotate(0, mouseX, 0);
-        //_camera.transform.Rotate(mouseY * -1, 0, 0);
-        }
+        Vector3 currentRotation = transform.localEulerAngles;
+        currentRotation.y += mouseX;
+        transform.localRotation = Quaternion.AngleAxis(currentRotation.y, Vector3.up);
+
+
+        Vector3 currentCameraRotation = _camera.transform.localEulerAngles;
+        currentCameraRotation.x -= mouseY;
+        _camera.transform.localRotation = Quaternion.AngleAxis(currentCameraRotation.x, Vector3.right);
+    }
 
     void PlayerMovement()
     {
