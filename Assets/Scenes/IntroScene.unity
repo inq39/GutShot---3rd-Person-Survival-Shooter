@@ -869,6 +869,7 @@ GameObject:
   - component: {fileID: 1635623618}
   - component: {fileID: 1635623622}
   - component: {fileID: 1635623624}
+  - component: {fileID: 1635623625}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1000,6 +1001,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f57ad9f6ad94e54592f568e2e1f3012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1635623625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635623617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8ed4d391a47bb74db0a6b03274a34f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 0
+  _minHealth: 0
+  _currentHealth: 0
 --- !u!1 &1787681639
 GameObject:
   m_ObjectHideFlags: 0
@@ -1216,8 +1232,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6456301374161897669, guid: 69d34950327570f4f933d5d154b25a46, type: 3}
-      propertyPath: _speed
+    - target: {fileID: 6956321431976708234, guid: 69d34950327570f4f933d5d154b25a46, type: 3}
+      propertyPath: _maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6956321431976708234, guid: 69d34950327570f4f933d5d154b25a46, type: 3}
+      propertyPath: _minHealth
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

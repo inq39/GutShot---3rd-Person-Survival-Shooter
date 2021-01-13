@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
 {    
-    CharacterController _enemyCC;
+    private CharacterController _enemyCC;
     private GameObject _player;
     [SerializeField] private float _speed = 4.0f;
     private float _gravity = 20.0f;
@@ -35,10 +35,12 @@ public class EnemyAI : MonoBehaviour
         {
 
             Vector3 direction = (_player.transform.position - transform.position).normalized;
-            _velocity = direction * _speed * Time.deltaTime;
+            direction.y = 0;
+            transform.localRotation = Quaternion.LookRotation(direction);
+            _velocity = direction * _speed;
         }
-        _velocity.y -= _gravity * Time.deltaTime;
-        _enemyCC.Move(_velocity);
+        _velocity.y -= _gravity;
+        _enemyCC.Move(_velocity * Time.deltaTime);
     }
 }
 
