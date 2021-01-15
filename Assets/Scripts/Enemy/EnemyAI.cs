@@ -4,16 +4,30 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
-{    
+{
+    public enum EnemyState
+    {
+        Attack,
+        Chase,
+        Idle
+    }
+
     private CharacterController _enemyCC;
     private GameObject _player;
+    private Health _playerHealth;
     [SerializeField] private float _speed = 4.0f;
     private float _gravity = 20.0f;
     private Vector3 _velocity;
+    [SerializeField] private int _damageAmount;
+    [SerializeField] private EnemyState _currentState;
+    private float _lastAttack = -1.5f;
+    private float _coolDownAttack = 1.0f;
 
     // Start is called before the first frame update
     void Start()
     {
+        _currentState = EnemyState.Chase;
+
         _enemyCC = GetComponent<CharacterController>();
         if (_enemyCC == null)
         {
@@ -21,12 +35,30 @@ public class EnemyAI : MonoBehaviour
         }
 
         _player = GameObject.FindGameObjectWithTag("Player");
+        _playerHealth = _player.GetComponent<Health>();
+        if (_player == null || _playerHealth == null)
+        {
+            Debug.LogError("Player or Health are null");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        CalculateMovement();
+        switch(_currentState)
+        {
+            case EnemyState.Attack:
+                Attacking();
+                break;
+            case EnemyState.Chase:
+                CalculateMovement();
+                break;
+            case EnemyState.Idle:
+
+                break;
+            default:
+                break;
+        }
     }
 
     private void CalculateMovement()
@@ -42,6 +74,37 @@ public class EnemyAI : MonoBehaviour
         _velocity.y -= _gravity;
         _enemyCC.Move(_velocity * Time.deltaTime);
     }
+
+    private void Attacking()
+    {
+      
+        if ((Time.time - _lastAttack) > _coolDownAttack)
+        {   if (_playerHealth != null) 
+            {
+                _playerHealth.GetDamage(_damageAmount);
+                _lastAttack = Time.time;
+            }                          
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player") 
+        { 
+        _currentState = EnemyState.Attack;
+        }
+    }
+
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            _currentState = EnemyState.Chase;
+        }
+    }
+
+    
 }
 
 

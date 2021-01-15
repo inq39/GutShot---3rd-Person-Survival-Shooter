@@ -1013,8 +1013,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8ed4d391a47bb74db0a6b03274a34f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 0
-  _minHealth: 0
+  _maxHealth: 100
+  _minHealth: 1
   _currentHealth: 0
 --- !u!1 &1787681639
 GameObject:
@@ -1231,14 +1231,6 @@ PrefabInstance:
     - target: {fileID: 6354422725414105342, guid: 69d34950327570f4f933d5d154b25a46, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6956321431976708234, guid: 69d34950327570f4f933d5d154b25a46, type: 3}
-      propertyPath: _maxHealth
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6956321431976708234, guid: 69d34950327570f4f933d5d154b25a46, type: 3}
-      propertyPath: _minHealth
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69d34950327570f4f933d5d154b25a46, type: 3}
