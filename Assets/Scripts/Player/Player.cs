@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     private CharacterController _cc;
     private GameObject _camera;
     [SerializeField] private float _playerSpeed = 6.0f;
-    private Vector3 _direction, _velocity;
+    private float _yVelocity;
     private float _jumpHeight = 8.0f;
     private float _gravity = 20.0f;
     [SerializeField] private bool _isGrounded;
@@ -41,11 +41,12 @@ public class Player : MonoBehaviour
     void Update()
     {
         _isGrounded = _cc.isGrounded;
-        PlayerMovement();
         PlayerLook();
+        PlayerMovement();
         UnlockCursor();
        
     }
+   
     void PlayerLook()
     {
         float mouseX = Input.GetAxis("Mouse X");
@@ -64,24 +65,26 @@ public class Player : MonoBehaviour
 
     void PlayerMovement()
     {
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        Vector3 direction = new Vector3(horizontal, 0, vertical);
+        Vector3 velocity = direction * _playerSpeed;
+
         if (_isGrounded)
-        {
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
-            _direction = new Vector3(horizontal, 0, vertical);
-            _velocity = _direction * _playerSpeed;
-
-
+        {            
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                _velocity.y = _jumpHeight;
+                _yVelocity = _jumpHeight;
             }
-
+        }
+        else
+        {
+            _yVelocity -= _gravity * Time.deltaTime;
         }
 
-        _velocity.y -= _gravity * Time.deltaTime;
-        _velocity = transform.TransformDirection(_velocity);
-        _cc.Move(_velocity * Time.deltaTime);
+        velocity.y = _yVelocity;
+        velocity = transform.TransformDirection(velocity);
+        _cc.Move(velocity * Time.deltaTime);
     }
 
     private void UnlockCursor()
