@@ -17,11 +17,15 @@ public class EnemyAI : MonoBehaviour
     private Health _playerHealth;
     [SerializeField] private float _speed = 4.0f;
     private float _gravity = 20.0f;
+    private float _yVelocity;
     private Vector3 _velocity;
     [SerializeField] private int _damageAmount;
     [SerializeField] private EnemyState _currentState;
     private float _lastAttack = -1.5f;
     private float _coolDownAttack = 1.0f;
+    private float _jumpHeight = 8.0f;
+    private bool _playerIsFarAway = false;
+    private float _lastJump = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -59,19 +63,31 @@ public class EnemyAI : MonoBehaviour
             default:
                 break;
         }
+
+        CalculateDistance();
     }
 
     private void CalculateMovement()
     {
-        if (_enemyCC.isGrounded)
-        {
+        Vector3 direction = (_player.transform.position - transform.position).normalized;
+        direction.y = 0;
+        transform.localRotation = Quaternion.LookRotation(direction);
+        _velocity = direction * _speed;
 
-            Vector3 direction = (_player.transform.position - transform.position).normalized;
-            direction.y = 0;
-            transform.localRotation = Quaternion.LookRotation(direction);
-            _velocity = direction * _speed;
+        if (_enemyCC.isGrounded)
+        {           
+            if (_playerIsFarAway)
+            {
+                _yVelocity += _jumpHeight;
+                _playerIsFarAway = false;
+            }        
         }
-        _velocity.y -= _gravity;
+        else
+        {
+            _yVelocity -= _gravity * Time.deltaTime;
+        }
+
+        _velocity.y = _yVelocity;
         _enemyCC.Move(_velocity * Time.deltaTime);
     }
 
@@ -104,7 +120,17 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    
+    private void CalculateDistance()
+    {
+        float distance = Vector3.Distance(_player.transform.position, transform.position);
+        
+        if ((Time.time - _lastJump > 5.0f) && distance > 10.0f)
+        {
+            _playerIsFarAway = true;
+            _lastJump = Time.time;
+        }
+         
+    }
 }
 
 
