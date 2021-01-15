@@ -1001,6 +1001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f57ad9f6ad94e54592f568e2e1f3012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodSplatter: {fileID: 8729043021112652020, guid: 819c6268a8e154147984aa729b6f126b, type: 3}
 --- !u!114 &1635623625
 MonoBehaviour:
   m_ObjectHideFlags: 0

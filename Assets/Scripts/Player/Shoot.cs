@@ -5,11 +5,7 @@ using UnityEngine;
 
 public class Shoot : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject bloodSplatter;
 
     // Update is called once per frame
     void Update()
@@ -31,7 +27,12 @@ public class Shoot : MonoBehaviour
                 Health health = hitInfo.collider.GetComponent<Health>();
 
                 if (health != null)
+                {
+                    var startRot = Quaternion.LookRotation(hitInfo.normal);
+                    var blood = Instantiate(bloodSplatter, hitInfo.point, startRot);
+                    Destroy(blood, 0.5f);
                     health.GetDamage(50);
+                }
             }
 
         }
