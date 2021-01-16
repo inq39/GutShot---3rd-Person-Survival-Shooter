@@ -20,6 +20,7 @@ public class Shoot : MonoBehaviour
             Vector3 center = new Vector3(0.5f, 0.5f, 0);
             Ray rayOrigin = Camera.main.ViewportPointToRay(center);
             RaycastHit hitInfo;
+            
 
             if (Physics.Raycast(rayOrigin, out hitInfo))
             {
@@ -30,7 +31,7 @@ public class Shoot : MonoBehaviour
                 {
                     var startRot = Quaternion.LookRotation(hitInfo.normal);
                     var blood = Instantiate(bloodSplatter, hitInfo.point, startRot);
-                    Destroy(blood, 0.5f);
+                    Destroy(blood, 0.2f);
                     health.GetDamage(50);
                 }
             }

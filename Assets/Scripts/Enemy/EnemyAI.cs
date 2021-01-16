@@ -103,22 +103,12 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void ChangeEnemyState(EnemyState es)
     {
-        if (other.tag == "Player") 
-        { 
-        _currentState = EnemyState.Attack;
-        }
+        _currentState = es;
     }
 
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            _currentState = EnemyState.Chase;
-        }
-    }
+    
 
     private void CalculateDistance()
     {
