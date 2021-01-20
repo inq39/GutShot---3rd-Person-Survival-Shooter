@@ -7,9 +7,12 @@ public class Player : MonoBehaviour
     [Header("Controller Settings")]
     private CharacterController _cc;
     private GameObject _camera;
-    [SerializeField] private float _playerSpeed = 6.0f;
+    [SerializeField] 
+    private float _playerSpeed = 6.0f;
     private float _yVelocity;
+    [SerializeField]
     private float _jumpHeight = 8.0f;
+    [SerializeField]
     private float _gravity = 20.0f;
     [SerializeField] private bool _isGrounded;
     
@@ -75,6 +78,7 @@ public class Player : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _yVelocity = _jumpHeight;
+                Debug.Log("Space");
             }
         }
         else
